@@ -1,10 +1,36 @@
 #[macro_use] extern crate rocket;
+#[macro_use] extern crate diesel;
 
-use rocket::{serde::json::Json, local::blocking::Client, fairing::{Fairing, Info, Kind}, Request, Response, http::Header};
+mod models;
+mod schema;
+
+use std::sync::Mutex;
+
+use diesel::{SqliteConnection, Connection, RunQueryDsl};
+use models::word::{NewWord, Word};
+use rocket::{serde::json::Json, local::blocking::Client, fairing::{Fairing, Info, Kind}, Request, Response, http::Header, State};
 
 #[get("/")]
 fn index() -> &'static str {
     "Hello, world!"
+}
+
+#[get("/word")]
+fn get_all_words(connection: &Database) -> Json<Vec<Word>> {
+    use schema::words;
+
+    let db = &*connection.lock().unwrap();
+    let vec: Vec<Word> = words::table.load(db).unwrap();
+
+    Json::from(vec)
+}
+
+#[post("/word", data = "<word>")]
+fn new_word(word: Json<NewWord>, connection: &Database) {
+    use schema::words;
+
+    let db = &*connection.lock().unwrap();
+    diesel::insert_into(words::table).values(&word.0).execute(db).expect("Could not insert new word");
 }
 
 #[get("/jisho?<word>")]
@@ -20,14 +46,21 @@ async fn get_word_from_jisho(word: String) -> Json<String> {
 }
 
 #[launch]
-fn rocket() -> _ {
+fn rocket() -> rocket::Rocket<rocket::Build> {
+    let connection = SqliteConnection::establish("vocab.db").unwrap();
+
     rocket::build()
     .attach(CORS)
+    .manage(Mutex::from(connection))
     .mount("/", routes![
         index,
-        get_word_from_jisho
+        get_word_from_jisho,
+        get_all_words,
+        new_word
     ])
 }
+
+type Database = State<Mutex<SqliteConnection>>;
 
 struct CORS;
 
