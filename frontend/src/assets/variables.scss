@@ -1,3 +1,19 @@
 $primary-color: #FFF8C9;
 $secondary-color: #42425A;
 $gray: #343434;
+
+@mixin vocab-input {
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+
+    background-color: $gray;
+    color: white;
+    width: 75vw;
+
+    margin-bottom: 20px;
+
+    &::placeholder {
+        color: #EEE;
+    }   
+}

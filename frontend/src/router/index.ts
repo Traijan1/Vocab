@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import CategoryView from '../views/CategoryView.vue'
 import TranslateView from '../views/TranslateView.vue'
 import WordView from '../views/WordView.vue'
+import CreateView from '../views/CreateView.vue'
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -21,11 +22,17 @@ const routes: Array<RouteRecordRaw> = [
         name: "word",
         component: WordView,
         props: true
-        },
+    },
     {
         path: "/jisho",
         name: "jisho",
         component: TranslateView
+    },
+    {
+        path: "/create/:type",
+        name: "create",
+        component: CreateView,
+        props: true
     },
 ]
 

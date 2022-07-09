@@ -61,19 +61,7 @@ export default class JishoView extends Vue {
     }
     
     input[type="text"] {
-        padding: 15px;
-        border: none;
-        border-radius: 10px;
-
-        background-color: $gray;
-        color: white;
-        width: 75vw;
-
-        margin-bottom: 20px;
-
-        &::placeholder {
-            color: #EEE;
-        }
+        @include vocab-input;
     }
 }
 </style>
