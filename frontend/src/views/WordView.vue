@@ -6,8 +6,8 @@
             <h1 v-if="currentWord != undefined">{{ currentWord.word.foreignLanguage }}</h1>
             <div :style="{ visibility: hideSolution }" v-if="currentWord != undefined"><b>The word was: {{ currentWord.word.motherTongue }}</b></div>
             <input type="text" placeholder="Write translation here.." v-model="translation" @keydown.enter="checkWord" /> <br>
-            <VocabButton @click="checkWord">Submit</VocabButton>
-            <VocabButton @click="skip">Skip</VocabButton>
+            <VocabButton @click="checkWord" class="button">Submit</VocabButton>
+            <VocabButton @click="skip" class="button">Skip</VocabButton>
         </div>
     </div>
 </template>
@@ -118,6 +118,10 @@ export default class WordView extends Vue {
                 font-size: 14px;
                 margin: 0;
                 margin-bottom: 30px;
+            }
+
+            .button {
+                margin: 0 15px;
             }
 
             input {

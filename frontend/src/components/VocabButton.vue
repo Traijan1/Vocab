@@ -23,7 +23,6 @@ export default class VocabButton extends Vue {
 
 button {
     padding: 10px 20px;
-    margin: 0 15px;
     border-radius: 10px;
     height: 45px;
     background-color: $secondary-color;

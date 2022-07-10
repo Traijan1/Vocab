@@ -23,5 +23,7 @@ export default class CreateView extends Vue {
 </script>
 
 <style lang="scss" scoped>
-
+    div {
+        margin: 50px 30px;
+    }
 </style>
