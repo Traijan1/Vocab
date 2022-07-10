@@ -12,6 +12,8 @@ import { Options, Vue } from 'vue-class-component';
 import TranslateService from "../services/TranslateService";
 import VocabButton from "../components/VocabButton.vue";
 import { Visibility } from '../models/Visibility';
+import { useAppStore } from "@/stores/AppStore";
+import { AppView } from "@/models/AppView";
 
 @Options({
     components: {
@@ -20,11 +22,17 @@ import { Visibility } from '../models/Visibility';
 })
 
 export default class JishoView extends Vue {
+    appStore = useAppStore();
+
     toTranslate = "";
     translatedWord = ".";
     jlptLevel = ".";
 
     visibility = Visibility.Hidden;
+
+    created() {
+        this.appStore.currentView = AppView.Dictionary;
+    }
 
     async translateWord() {
         [this.translatedWord, this.jlptLevel] = await TranslateService.getWord(this.toTranslate);

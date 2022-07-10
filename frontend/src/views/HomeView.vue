@@ -7,6 +7,8 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import Card from "../components/Card.vue";
+import { useAppStore } from "@/stores/AppStore";
+import { AppView } from "@/models/AppView";
 
 @Options({
     components: {
@@ -14,10 +16,16 @@ import Card from "../components/Card.vue";
     },
 })
 export default class HomeView extends Vue {
+    appStore = useAppStore();
+
     languages: string[] = [
         "日本語",
         "German"
     ]
+
+    created() {
+        this.appStore.currentView = AppView.Vocab;
+    }
 
     navigateCategory(language: string) {
         this.$router.push("/category/" + language);
