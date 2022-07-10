@@ -1,12 +1,16 @@
 <template>
-  <nav>
-    <router-link to="/" class="link">Vocab</router-link>
-    <router-link to="/jisho" class="link">Dictionary</router-link>
-  </nav>
-  
-  <router-view/>
+    <div class="searchbar">
+        <input type="text" placeholder="Search.."/>
+    </div>
 
-  <FloatingActionButton link="/create/word" />
+    <nav>
+        <router-link to="/" class="link">Vocab</router-link>
+        <router-link to="/jisho" class="link">Dictionary</router-link>
+    </nav>
+    
+    <router-view/>
+
+    <FloatingActionButton link="/create/word" />
 </template>
 
 <script lang="ts">
@@ -19,7 +23,9 @@ import FloatingActionButton from "./components/FloatingActionButton.vue";
     }
 })
 
-export default class App extends Vue { }
+export default class App extends Vue { 
+   
+}
 </script>
 
 
@@ -56,4 +62,16 @@ nav {
         }
     }
 }
+
+.searchbar {
+    margin-top: 20px;
+    text-align: center;
+    
+    input {
+        @include vocab-input;
+        padding: 10px;
+        width: 85vw;
+    }
+}
+
 </style>
