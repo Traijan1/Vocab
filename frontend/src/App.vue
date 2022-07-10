@@ -4,13 +4,13 @@
     </div>
 
     <nav>
-        <router-link to="/" class="link" :class="{ highlight: appStore.currentView < 2 }" @click="appStore.currentView = 0">Vocab</router-link>
-        <router-link to="/jisho" class="link" :class="{ highlight: appStore.currentView == 2 }" @click="appStore.currentView = 2">Dictionary</router-link>
+        <router-link to="/" class="link" :class="{ highlight: appStore.currentView < 2 }" @click="setView(0)">Vocab</router-link>
+        <router-link to="/jisho" class="link" :class="{ highlight: appStore.currentView == 2 }" @click="setView(2)">Dictionary</router-link>
     </nav>
     
     <router-view/>
 
-    <FloatingActionButton link="/create/word" @click="appStore.currentView = 1" />
+    <FloatingActionButton link="/create/word" @click="setView(1)" />
 </template>
 
 <script lang="ts">
@@ -26,6 +26,10 @@ import { useAppStore } from './stores/AppStore';
 
 export default class App extends Vue { 
     appStore = useAppStore();
+
+    setView(view: number) {
+        this.appStore.currentView = view;
+    }
 }
 </script>
 
