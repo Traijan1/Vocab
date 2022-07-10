@@ -36,7 +36,7 @@ export default class JishoView extends Vue {
     }
 
     addWord() {
-        if(this.toTranslate == "" || this.translatedWord)
+        if(this.toTranslate == "" || this.translatedWord == "")
             return;
 
         this.$router.push(`/create/word/${this.toTranslate}/${this.translatedWord}`);
