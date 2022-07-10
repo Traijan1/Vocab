@@ -1,6 +1,6 @@
 <template>
     <div>
-        <CreateWord v-if="type == 'word'" />
+        <CreateWord v-if="type == 'word'" :foreignLanguage="foreignLanguage" :motherTongue="motherTongue" />
     </div>
 </template>
 
@@ -12,7 +12,9 @@ import { AppView } from "@/models/AppView";
 
 @Options({
     props: {
-        type: String
+        type: String,
+        foreignLanguage: String,    
+        motherTongue: String
     },
     components: {
         CreateWord
@@ -21,6 +23,9 @@ import { AppView } from "@/models/AppView";
 
 export default class CreateView extends Vue {
     appStore = useAppStore();
+
+    foreignLanguage!: string;    
+    motherTongue!: string;
     
     type!: string;
 

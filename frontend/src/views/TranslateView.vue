@@ -3,7 +3,8 @@
         <h2 :style="{ visibility }">{{translatedWord}}</h2>
         <div :style="{ visibility }">JLPT-Level: <span>{{jlptLevel}}</span></div>
         <input type="text" placeholder="Translate.." v-model="toTranslate" @keydown.enter="translateWord" /><br>
-        <VocabButton @click="translateWord">Search</VocabButton>
+        <VocabButton @click="translateWord" class="button">Search</VocabButton>
+        <VocabButton @click="addWord" class="button">Add Word</VocabButton>
     </div>
 </template>
 
@@ -32,6 +33,13 @@ export default class JishoView extends Vue {
 
     created() {
         this.appStore.currentView = AppView.Dictionary;
+    }
+
+    addWord() {
+        if(this.toTranslate == "" || this.translatedWord)
+            return;
+
+        this.$router.push(`/create/word/${this.toTranslate}/${this.translatedWord}`);
     }
 
     async translateWord() {
@@ -70,6 +78,10 @@ export default class JishoView extends Vue {
     
     input[type="text"] {
         @include vocab-input;
+    }
+
+    .button {
+        margin: 0px 10px;
     }
 }
 </style>

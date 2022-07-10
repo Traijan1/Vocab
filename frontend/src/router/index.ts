@@ -29,7 +29,7 @@ const routes: Array<RouteRecordRaw> = [
         component: TranslateView
     },
     {
-        path: "/create/:type",
+        path: "/create/:type/:foreignLanguage?/:motherTongue?",
         name: "create",
         component: CreateView,
         props: true

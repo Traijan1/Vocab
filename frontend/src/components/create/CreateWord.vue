@@ -1,9 +1,9 @@
 <template>
     <div class="header">Foreign Language:</div>
-    <input type="text" v-model="foreignLanguage" />
+    <input type="text" v-model="foreign" />
     
     <div class="header">Mother Tongue:</div>
-    <input type="text" v-model="motherTongue" @kedown.enter="addWord" />
+    <input type="text" v-model="mother" @kedown.enter="addWord" />
 
     <span>
         <VocabButton @click="addWord">Add</VocabButton>
@@ -19,21 +19,35 @@ import { Word } from '@/models/Word';
 @Options({
     components: {
         VocabButton
+    },
+    props: {
+        foreignLanguage: String,    
+        motherTongue: String
     }
 })
 
 export default class CreateWord extends Vue {
-    foreignLanguage = "";  
-    motherTongue = "";  
+    foreignLanguage!: string;  
+    motherTongue!: string;  
+
+    foreign = "";
+    mother = "";
+
+    created() {
+        this.foreign = this.foreignLanguage;
+        this.mother = this.motherTongue;
+    }
 
     async addWord() {
-        if(this.foreignLanguage == "" || this.motherTongue == "")
+        if(this.foreign == "" || this.mother == "")
             return;
 
-        await WordService.postWord(new Word(this.foreignLanguage, this.motherTongue));
+        await WordService.postWord(new Word(this.foreign, this.mother));
     
-        this.motherTongue = "";
-        this.foreignLanguage = "";
+        this.mother = "";
+        this.foreign = "";
+
+        this.$router.push("/create/word");
     }
 }
 </script>
