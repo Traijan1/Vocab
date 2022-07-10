@@ -1,21 +1,22 @@
 <template>
-    <div class="searchbar">
+    <div class="searchbar" :style="{ display: appStore.currentView == 0 ? 'block' : 'none' }">
         <input type="text" placeholder="Search.."/>
     </div>
 
     <nav>
-        <router-link to="/" class="link">Vocab</router-link>
-        <router-link to="/jisho" class="link">Dictionary</router-link>
+        <router-link to="/" class="link" :class="{ highlight: appStore.currentView < 2 }" @click="appStore.currentView = 0">Vocab</router-link>
+        <router-link to="/jisho" class="link" :class="{ highlight: appStore.currentView == 2 }" @click="appStore.currentView = 2">Dictionary</router-link>
     </nav>
     
     <router-view/>
 
-    <FloatingActionButton link="/create/word" />
+    <FloatingActionButton link="/create/word" @click="appStore.currentView = 1" />
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import FloatingActionButton from "./components/FloatingActionButton.vue";
+import { useAppStore } from './stores/AppStore';
 
 @Options({
     components: {
@@ -24,7 +25,7 @@ import FloatingActionButton from "./components/FloatingActionButton.vue";
 })
 
 export default class App extends Vue { 
-   
+    appStore = useAppStore();
 }
 </script>
 
@@ -56,10 +57,10 @@ nav {
     .link {
         color: white;
         text-decoration: none;
+    }
 
-        &.router-link-active {
-            color: $primary-color;
-        }
+    .highlight {
+        color: $primary-color;
     }
 }
 

@@ -19,6 +19,7 @@ import VocabButton from "../components/VocabButton.vue";
 import WordService from "../services/WordService";
 import { CurrentWord } from '../models/CurrentWord';
 import { Visibility } from '@/models/Visibility';
+import { useAppStore } from '@/stores/AppStore';
 
 @Options({
     props: {
@@ -30,6 +31,8 @@ import { Visibility } from '@/models/Visibility';
     }
 })
 export default class WordView extends Vue {
+    appStore = useAppStore();
+
     language!: string;
     category!: string;
 
@@ -59,6 +62,7 @@ export default class WordView extends Vue {
         };
 
         this.$forceUpdate();
+        this.appStore.currentView = 1;
     }
 
     checkWord() {

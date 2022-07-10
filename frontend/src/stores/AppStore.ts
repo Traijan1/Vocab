@@ -1,17 +1,18 @@
+import { AppView } from "@/models/AppView";
 import { defineStore } from "pinia";
 
 export const useAppStore = defineStore({
     id: "app",
     state: () => ({
-        test: "" as string
+        currentView: AppView.Vocab
     }),
     getters: {
-        getTest(): string {
-            return this.test;
+        getView(): AppView {
+            return this.currentView;
         }
     },
     actions: {
-        setTest(value: string) {
+        setView(value: AppView) {
             this.test = value;
         }
     },
