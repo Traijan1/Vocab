@@ -8,6 +8,8 @@
     <span>
         <VocabButton @click="addWord">Add</VocabButton>
     </span>
+
+    <span class="error">{{ errorText }}</span>
 </template>
 
 <script lang="ts">
@@ -33,16 +35,20 @@ export default class CreateWord extends Vue {
     foreign = "";
     mother = "";
 
+    errorText = "";
+
     created() {
         this.foreign = this.foreignLanguage;
         this.mother = this.motherTongue;
     }
 
     async addWord() {
+        this.errorText = "";
+        
         if(this.foreign == "" || this.mother == "")
             return;
 
-        await WordService.postWord(new Word(this.foreign, this.mother));
+        this.errorText = await WordService.postWord(new Word(this.foreign, this.mother));
     
         this.mother = "";
         this.foreign = "";
@@ -74,5 +80,11 @@ export default class CreateWord extends Vue {
 
     .button { 
         margin: auto auto;
+    }
+
+    .error {
+        margin-top: 20px;
+        text-align: center;
+        color: red;
     }
 </style>

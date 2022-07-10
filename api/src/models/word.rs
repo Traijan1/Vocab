@@ -13,11 +13,11 @@ pub struct Word {
     foreign_language: String,
 }
 
-#[derive(Deserialize, Serialize, Insertable)]
+#[derive(Deserialize, Serialize, Insertable, Queryable, Clone)]
 #[table_name = "words"]
 pub struct NewWord {
     #[serde(rename(deserialize = "motherTongue"))]
-    mother_tongue: String,
+    pub mother_tongue: String,
     #[serde(rename(deserialize = "foreignLanguage"))]
-    foreign_language: String,
+    pub foreign_language: String,
 }

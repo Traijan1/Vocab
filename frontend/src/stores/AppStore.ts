@@ -13,7 +13,7 @@ export const useAppStore = defineStore({
     },
     actions: {
         setView(value: AppView) {
-            this.test = value;
+            this.currentView = value;
         }
     },
 });

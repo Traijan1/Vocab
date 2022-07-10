@@ -11,15 +11,16 @@ class WordService extends Service {
         return json;
     }
 
-    public async postWord(word: Word): Promise<void> {
-        await fetch(`${this.baseUrl}/word`, {
+    public async postWord(word: Word): Promise<string> {
+        const response = await fetch(`${this.baseUrl}/word`, {
             method: "POST",
-            mode: "no-cors",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(word)
         });
+
+        return response.status == 409 ? "This word does already exists" : "";
     }
 }
 

@@ -6,9 +6,9 @@ mod schema;
 
 use std::sync::Mutex;
 
-use diesel::{SqliteConnection, Connection, RunQueryDsl};
+use diesel::{SqliteConnection, Connection, RunQueryDsl, QueryDsl, ExpressionMethods};
 use models::word::{NewWord, Word};
-use rocket::{serde::json::Json, local::blocking::Client, fairing::{Fairing, Info, Kind}, Request, Response, http::Header, State};
+use rocket::{serde::json::Json, fairing::{Fairing, Info, Kind}, Request, Response, http::{Header, Status}, State};
 
 #[get("/")]
 fn index() -> &'static str {
@@ -26,11 +26,21 @@ fn get_all_words(connection: &Database) -> Json<Vec<Word>> {
 }
 
 #[post("/word", data = "<word>")]
-fn new_word(word: Json<NewWord>, connection: &Database) {
+fn new_word(word: Json<NewWord>, connection: &Database) -> Status {
     use schema::words;
 
     let db = &*connection.lock().unwrap();
+    let new_word = word.0.clone();
+
+    let word_vec: Vec<Word> = words::dsl::words.filter(words::dsl::foreign_language.eq(new_word.foreign_language)).filter(words::dsl::mother_tongue.eq(new_word.mother_tongue)).load(db).unwrap();
+    
+    if word_vec.len() > 0 {
+        return Status::Conflict;
+    }
+
     diesel::insert_into(words::table).values(&word.0).execute(db).expect("Could not insert new word");
+
+    Status::Created
 }
 
 #[get("/jisho?<word>")]
@@ -45,6 +55,11 @@ async fn get_word_from_jisho(word: String) -> Json<String> {
     Json::from(response)
 }
 
+#[options("/word")]
+fn option_word() -> Status {
+    Status::Ok
+}
+
 #[launch]
 fn rocket() -> rocket::Rocket<rocket::Build> {
     let connection = SqliteConnection::establish("vocab.db").unwrap();
@@ -56,7 +71,8 @@ fn rocket() -> rocket::Rocket<rocket::Build> {
         index,
         get_word_from_jisho,
         get_all_words,
-        new_word
+        new_word,
+        option_word
     ])
 }
 
