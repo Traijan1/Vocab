@@ -10,7 +10,7 @@
     
     <router-view/>
 
-    <FloatingActionButton link="/create/word" />
+    <FloatingActionButton link="/create/word" v-if="appStore.currentView != 1" />
 </template>
 
 <script lang="ts">

@@ -1,6 +1,6 @@
 <template>
     <div class="view">
-        <span v-if="currentWord != undefined">{{ currentWord.position }}/{{ words.length - 1 }} words left</span>
+        <span v-if="currentWord != undefined">{{ currentWord.position }}/{{ words.length - 1 }} words done</span>
 
         <div>
             <h1 v-if="currentWord != undefined">{{ currentWord.word.foreignLanguage }}</h1>
@@ -106,7 +106,7 @@ export default class WordView extends Vue {
         color: white;
 
         div {
-            margin-top: 200px;
+            margin-top: 25vh;
             text-align: center;
 
             h1, div {
