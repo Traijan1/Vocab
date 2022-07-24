@@ -109,7 +109,7 @@ export default class WordView extends Vue {
     }
 
     getHasSecondReading(): boolean {
-        return this.currentWord?.word.secondReading != undefined || this.currentWord?.word.secondReading != "" ;
+        return this.currentWord?.word.secondReading != undefined && this.currentWord?.word.secondReading != "";
     }
 }
 </script>
