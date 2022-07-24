@@ -3,11 +3,12 @@
         <span v-if="currentWord != undefined">{{ currentWord.position }}/{{ words.length - 1 }} words done</span>
 
         <div>
-            <h1 v-if="currentWord != undefined">{{ currentWord.word.foreignLanguage }}</h1>
+            <h1 v-if="currentWord != undefined">{{ reading }}</h1>
             <div :style="{ visibility: hideSolution }" v-if="currentWord != undefined"><b>The word was: {{ currentWord.word.motherTongue }}</b></div>
             <input type="text" placeholder="Write translation here.." v-model="translation" @keydown.enter="checkWord" /> <br>
             <VocabButton @click="checkWord" class="button">Submit</VocabButton>
             <VocabButton @click="skip" class="button">Skip</VocabButton>
+            <VocabButton @click="showSecondReading()" class="button" v-if="getHasSecondReading()">Second Reading</VocabButton>
         </div>
     </div>
 </template>
@@ -36,16 +37,10 @@ export default class WordView extends Vue {
     language!: string;
     category!: string;
 
+    reading = "";
     translation = "";
 
-    words: Word[] =  [
-        // new Word("日本", "Japan"),
-        // new Word("買う", "kaufen"),
-        // new Word("好き", "mögen"),
-        // new Word("私", "Ich"),
-        // new Word("彼女", "Sie"),
-        // new Word("何", "Was"),
-    ];
+    words: Word[] = [];
 
     currentWord: CurrentWord|undefined = undefined;
 
@@ -54,15 +49,24 @@ export default class WordView extends Vue {
     async created() {
         this.words = await WordService.getAllWords();
         this.words = this.words.sort((_,b) => 0.5 - Math.random());
-        this.words.push(new Word("You finished all words!", ""));
+        this.words.push(new Word("You finished all words!", "", undefined));
 
         this.currentWord = {
             position: 0,
             word: this.words[0]
         };
 
+        this.setReading();
+
         this.$forceUpdate();
         this.appStore.currentView = 1;
+    }
+
+    setReading() {
+        if(this.currentWord == undefined)
+            return;
+
+        this.reading = this.currentWord.word.foreignLanguage;
     }
 
     checkWord() {
@@ -93,7 +97,19 @@ export default class WordView extends Vue {
             word: this.words[current.position]
         };
 
+        this.setReading();
         this.translation = "";
+    }
+
+    showSecondReading() {
+        if(this.currentWord?.word.secondReading == undefined)
+            return;
+
+        this.reading = this.currentWord.word.secondReading;
+    }
+
+    getHasSecondReading(): boolean {
+        return this.currentWord?.word.secondReading != undefined || this.currentWord?.word.secondReading != "" ;
     }
 }
 </script>
@@ -126,10 +142,12 @@ export default class WordView extends Vue {
 
             .button {
                 margin: 0 15px;
+                margin-top: 20px;
             }
 
             input {
                 @include vocab-input;
+                margin: 0;
             }
         }
     }

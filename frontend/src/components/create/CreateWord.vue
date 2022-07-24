@@ -1,9 +1,12 @@
 <template>
+    <div class="header">Mother Tongue:</div>
+    <input type="text" v-model="mother" @kedown.enter="addWord" />
+
     <div class="header">Foreign Language:</div>
     <input type="text" v-model="foreign" />
     
-    <div class="header">Mother Tongue:</div>
-    <input type="text" v-model="mother" @kedown.enter="addWord" />
+    <div class="header">Second Reading:</div>
+    <input type="text" v-model="secondReading" @kedown.enter="addWord" />
 
     <span>
         <VocabButton @click="addWord">Add</VocabButton>
@@ -34,6 +37,7 @@ export default class CreateWord extends Vue {
 
     foreign = "";
     mother = "";
+    secondReading: string|undefined = undefined;
 
     errorText = "";
 
@@ -48,10 +52,11 @@ export default class CreateWord extends Vue {
         if(this.foreign == "" || this.mother == "")
             return;
 
-        this.errorText = await WordService.postWord(new Word(this.foreign, this.mother));
+        this.errorText = await WordService.postWord(new Word(this.foreign, this.mother, this.secondReading));
     
         this.mother = "";
         this.foreign = "";
+        this.secondReading = "";
 
         this.$router.push("/create/word");
     }

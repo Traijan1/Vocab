@@ -11,6 +11,8 @@ pub struct Word {
     mother_tongue: String,
     #[serde(rename(serialize = "foreignLanguage"))]
     foreign_language: String,
+    #[serde(rename(serialize = "secondReading"))]
+    second_reading: Option<String>,
 }
 
 #[derive(Deserialize, Serialize, Insertable, Queryable, Clone)]
@@ -20,4 +22,6 @@ pub struct NewWord {
     pub mother_tongue: String,
     #[serde(rename(deserialize = "foreignLanguage"))]
     pub foreign_language: String,
+    #[serde(rename(deserialize = "secondReading"))]
+    pub second_reading: Option<String>,
 }
